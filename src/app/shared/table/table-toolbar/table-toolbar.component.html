@@ -1,0 +1,24 @@
+<div>
+  <button type="button"
+          class="btn btn-primary"
+          (click)="handleAdd(tableModeConst.ROW_MODE)">
+    Add Row
+  </button>
+  <button type="button"
+          class="btn btn-primary"
+          (click)="handleAdd(tableModeConst.COLUMN_MODE)">
+    Add Column
+  </button>
+  <button type="button"
+          class="btn btn-primary"
+          [disabled]="deleteDisable"
+          (click)="handleDelete()">
+    Delete
+  </button>
+</div>
+<app-table-crud-form *ngIf="isAddFormVisible"
+                     [mode]="tableMode"
+                     (accept)="handleAccept($event)"
+                     (cancel)="handleCancel()"
+                     [fieldNameList]="fieldNameList">
+</app-table-crud-form>

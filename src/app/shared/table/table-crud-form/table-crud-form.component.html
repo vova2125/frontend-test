@@ -1,0 +1,21 @@
+<div>
+  <form [formGroup]="fieldGroup">
+    <input *ngFor="let fieldName of fieldNameList"
+           [placeholder]="fieldName"
+           [formControlName]="fieldName"
+           [type]="mode ? 'text': 'number'">
+  </form>
+  <div class="control-buttons">
+    <button type="button"
+            [disabled]="fieldGroup.invalid"
+            (click)="handleAccept()"
+            class="btn btn-primary">
+      Ok
+    </button>
+    <button type="button"
+            (click)="handleCancel()"
+            class="btn btn-default">
+      Cancel
+    </button>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+table {
+  border-radius: 10px;
+  overflow: hidden;
+
+  tr, td, th {
+    cursor: pointer;
+    border: none;
+  }
+
+  tbody {
+    tr:nth-child(odd) {
+      background: #F8F7FE;
+    }
+  }
+
+  tfoot {
+    td {
+      background: #007bff;
+      color: white;
+    }
+  }
+
+  th {
+    position: relative;
+    background: #007bff;
+    color: white;
+
+    span {
+      opacity: 0;
+      position: absolute;
+      right: 15px;
+    }
+
+    &:hover {
+      span {
+        opacity: 1;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .selected-row {
+    border: 2px solid cornflowerblue  ;
+    border-radius: 5px;
+  }
+}
+
+
