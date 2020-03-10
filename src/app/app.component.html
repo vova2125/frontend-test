@@ -1,8 +1,8 @@
 <div class="order-list-wrapper">
-  <app-table [data]="orderList"
-             [config]="orderConfig"
+  <app-table [data]="orderList$ | async"
+             [config]="orderConfig$ | async"
              (addTableRow)="addOrder($event)"
-             [isShowAdditionalInfo]="1"
+             [isShowAdditionalInfo]="tableAdditionalInfoStatus.MUL"
              (deleteTableColumn)="deleteOrderProperty($event)"
              (deleteTableRow)="deleteOrder($event)">
   </app-table>

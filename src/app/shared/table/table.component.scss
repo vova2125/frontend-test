@@ -8,9 +8,19 @@ table {
   }
 
   tbody {
-    tr:nth-child(odd) {
-      background: #F8F7FE;
+    tr {
+      border-bottom: 1px solid transparent;
+
+      &.selected-row {
+        border-bottom: 1px solid cornflowerblue;
+        border-radius: 5px;
+      }
+
+      &:nth-child(odd) {
+        background: #F8F7FE;
+      }
     }
+
   }
 
   tfoot {
@@ -37,11 +47,6 @@ table {
         cursor: pointer;
       }
     }
-  }
-
-  .selected-row {
-    border: 2px solid cornflowerblue  ;
-    border-radius: 5px;
   }
 }
 

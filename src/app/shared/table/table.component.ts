@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { TableService } from './services/table.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
@@ -20,7 +30,8 @@ export enum ADDITIONAL_TABLE_INFO {
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, OnDestroy, OnChanges {
   @Input() data = [];
@@ -39,13 +50,13 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private tableService: TableService) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.tableService.getSelectedTableRowId()
       .pipe(takeUntil(this.destroy$))
       .subscribe(id => this.selectedRowId = id);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     if (changes && this.isShowAdditionalInfo) {
       switch (this.isShowAdditionalInfo) {
         case ADDITIONAL_TABLE_INFO.SUM: {
@@ -80,5 +91,9 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
 
   handleAdd(value): void {
     this.addTableRow.emit(value);
+  }
+
+  trackByFn(index) {
+    return index;
   }
 }

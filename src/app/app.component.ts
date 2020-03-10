@@ -1,11 +1,15 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { IStoreState } from './store/app.reduce-map';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { selectOrderConfig, selectOrderList } from './store/selectors/order.selectors';
-import { ITableConfig } from './shared/table/table.component';
-import { addNewOrderAction, addNewOrderProperty, deleteExistingOrderAction, deleteOrderProperty } from './store/actions/order.actions';
+import { ADDITIONAL_TABLE_INFO, ITableConfig } from './shared/table/table.component';
+import {
+  addNewOrderAction,
+  addNewOrderProperty,
+  deleteExistingOrderAction,
+  deleteOrderProperty
+} from './store/actions/order.actions';
 import { TABLE_MODE } from './shared/table/table-toolbar/table-toolbar.component';
 
 @Component({
@@ -13,38 +17,15 @@ import { TABLE_MODE } from './shared/table/table-toolbar/table-toolbar.component
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
-  orderConfig: ITableConfig[];
-  orderList;
-
-  private destroy$: Subject<void> = new Subject<void>();
+export class AppComponent implements OnInit {
+  orderConfig$: Observable<ITableConfig[]> = this.store.select(selectOrderConfig);
+  orderList$: Observable<any> = this.store.select(selectOrderList);
+  readonly tableAdditionalInfoStatus = ADDITIONAL_TABLE_INFO;
 
   constructor(private store: Store<IStoreState>) {
   }
 
   ngOnInit(): void {
-    this.initListeners();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  initListeners(): void {
-    this.store
-      .pipe(
-        select(selectOrderConfig),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((orderConfig: ITableConfig[]) => this.orderConfig = orderConfig);
-
-    this.store
-      .pipe(
-        select(selectOrderList),
-        takeUntil(this.destroy$)
-      )
-      .subscribe(orderList => this.orderList = orderList);
   }
 
   deleteOrder(id: number): void {
