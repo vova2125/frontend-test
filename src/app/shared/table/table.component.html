@@ -1,21 +1,22 @@
 <app-table-toolbar [deleteDisable]="!selectedRowId"
                    [fieldNames]="config"
                    (handleAddNewRow)="handleAdd($event)"
+                   (handleChangeAdditionalStatus)="handleAdditionalInfoProcess($event)"
                    (handleDeleteRow)="handleDelete()">
 </app-table-toolbar>
 <table class="table">
   <thead>
-    <tr>
-      <th *ngFor="let headerConfig of config; trackBy: trackByFn">
-        {{headerConfig?.title}}
-        <span (click)="handleDeleteColumn(headerConfig?.id)">
+  <tr>
+    <th *ngFor="let headerConfig of config; trackBy: trackByFn">
+      {{headerConfig?.title}}
+      <span (click)="handleDeleteColumn(headerConfig?.id)">
           <img src="../../../assets/images/close.svg"
                alt="close-icon"
                width="14"
                height="14"/>
         </span>
-      </th>
-    </tr>
+    </th>
+  </tr>
   </thead>
   <tbody>
   <tr *ngFor="let item  of data; trackBy: trackByFn"
@@ -25,7 +26,7 @@
   </tr>
   </tbody>
   <tfoot>
-  <tr *ngIf="isShowAdditionalInfo && additionalInfo">
+  <tr *ngIf="additionalInfo">
     <td *ngFor="let headerConfig of config">{{ additionalInfo[headerConfig?.field] }}</td>
   </tr>
   </tfoot>

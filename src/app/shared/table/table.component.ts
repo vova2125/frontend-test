@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -14,6 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { IAcceptEmitter } from './table-crud-form/table-crud-form.component';
 import { mulInListInEachField, sumInListInEachField } from './utils/util';
+import { IOrder } from '../../utils/order-mock';
 
 export interface ITableConfig {
   field: string;
@@ -22,9 +24,9 @@ export interface ITableConfig {
 }
 
 export enum ADDITIONAL_TABLE_INFO {
-  NONE,
-  SUM,
-  MUL
+  NONE = 0,
+  SUM = 1,
+  MUL = 2
 }
 
 @Component({
@@ -34,20 +36,21 @@ export enum ADDITIONAL_TABLE_INFO {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() data = [];
+  @Input() data: IOrder[] = [];
   @Input() config: ITableConfig[] = [];
-  @Input() isShowAdditionalInfo = ADDITIONAL_TABLE_INFO.NONE;
 
   @Output() deleteTableRow: EventEmitter<number> = new EventEmitter<number>();
   @Output() deleteTableColumn: EventEmitter<string> = new EventEmitter<string>();
   @Output() addTableRow: EventEmitter<IAcceptEmitter> = new EventEmitter<IAcceptEmitter>();
 
   selectedRowId: number;
-  additionalInfo: { key: string };
+  additionalInfo: IOrder;
+  additionalInfoStatus: number | null;
 
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private tableService: TableService) {
+  constructor(private tableService: TableService,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -57,19 +60,7 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes && this.isShowAdditionalInfo) {
-      switch (this.isShowAdditionalInfo) {
-        case ADDITIONAL_TABLE_INFO.SUM: {
-          this.additionalInfo = sumInListInEachField(this.config, this.data);
-          return;
-        }
-        case ADDITIONAL_TABLE_INFO.MUL: {
-          this.additionalInfo = mulInListInEachField(this.config, this.data);
-          return;
-        }
-      }
-
-    }
+      this.handleAdditionalInfoProcess(this.additionalInfoStatus);
   }
 
   ngOnDestroy(): void {
@@ -93,7 +84,25 @@ export class TableComponent implements OnInit, OnDestroy, OnChanges {
     this.addTableRow.emit(value);
   }
 
-  trackByFn(index) {
+  handleAdditionalInfoProcess(additionalStatus: number): void {
+    this.additionalInfoStatus = additionalStatus;
+    switch (additionalStatus) {
+      case ADDITIONAL_TABLE_INFO.SUM: {
+        this.additionalInfo = sumInListInEachField(this.config, this.data);
+        this.cdr.markForCheck();
+        return;
+      }
+      case ADDITIONAL_TABLE_INFO.MUL: {
+        this.additionalInfo = mulInListInEachField(this.config, this.data);
+        this.cdr.markForCheck();
+        return;
+      }
+      default:
+        this.additionalInfo = null;
+    }
+  }
+
+  trackByFn(index: number): number {
     return index;
   }
 }

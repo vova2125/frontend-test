@@ -1,3 +1,11 @@
+export interface IOrder {
+  id: number;
+  count: number;
+  price: number;
+  discount: number;
+  maxPrice: number;
+}
+
 export const ORDER_CONFIG = [
   {
     field: 'count',

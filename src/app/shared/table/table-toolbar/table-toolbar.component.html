@@ -1,4 +1,9 @@
 <div>
+  <select [formControl]="additionalInfoControl">
+    <option *ngFor="let item of tableAdditionalListStatuses"
+            [value]="item.value">{{item?.label}}
+    </option>
+  </select>
   <button type="button"
           class="btn btn-primary"
           (click)="handleAdd(tableModeConst.ROW_MODE)">

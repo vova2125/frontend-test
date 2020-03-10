@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { IStoreState } from './store/app.reduce-map';
 import { Observable } from 'rxjs';
 import { selectOrderConfig, selectOrderList } from './store/selectors/order.selectors';
-import { ADDITIONAL_TABLE_INFO, ITableConfig } from './shared/table/table.component';
+import { ITableConfig } from './shared/table/table.component';
 import {
   addNewOrderAction,
   addNewOrderProperty,
@@ -11,21 +11,18 @@ import {
   deleteOrderProperty
 } from './store/actions/order.actions';
 import { TABLE_MODE } from './shared/table/table-toolbar/table-toolbar.component';
+import { IOrder } from './utils/order-mock';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   orderConfig$: Observable<ITableConfig[]> = this.store.select(selectOrderConfig);
-  orderList$: Observable<any> = this.store.select(selectOrderList);
-  readonly tableAdditionalInfoStatus = ADDITIONAL_TABLE_INFO;
+  orderList$: Observable<IOrder[]> = this.store.select(selectOrderList);
 
   constructor(private store: Store<IStoreState>) {
-  }
-
-  ngOnInit(): void {
   }
 
   deleteOrder(id: number): void {

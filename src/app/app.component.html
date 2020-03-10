@@ -2,7 +2,6 @@
   <app-table [data]="orderList$ | async"
              [config]="orderConfig$ | async"
              (addTableRow)="addOrder($event)"
-             [isShowAdditionalInfo]="tableAdditionalInfoStatus.MUL"
              (deleteTableColumn)="deleteOrderProperty($event)"
              (deleteTableRow)="deleteOrder($event)">
   </app-table>

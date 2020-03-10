@@ -2,6 +2,10 @@ div {
   display: flex;
   justify-content: flex-end;
   margin: 5px 0;
+
+  select {
+    margin: 0 auto 0 0;
+  }
 }
 
 button {

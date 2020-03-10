@@ -53,6 +53,6 @@ export const handleDeleteItem = (list, id) => {
   });
 };
 
-export function orderReducer(state: any, action: Action) {
+export function orderReducer(state, action: Action) {
   return orderReducerImplicit(state, action);
 }

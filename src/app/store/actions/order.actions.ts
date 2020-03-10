@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { IOrder } from '../../utils/order-mock';
 
 export enum ORDER_ACTIONS {
   ADD_NEW_ORDER = '[ORDER] Add new Order Item',
@@ -8,7 +9,7 @@ export enum ORDER_ACTIONS {
 }
 
 export const addNewOrderAction = createAction(ORDER_ACTIONS.ADD_NEW_ORDER,
-  props<{ value }>());
+  props<{ value: IOrder }>());
 
 export const deleteExistingOrderAction = createAction(ORDER_ACTIONS.DELETE_EXISTING_ORDER,
   props<{ id: number }>());
