@@ -1,9 +1,5 @@
 export interface IOrder {
-  id: number;
-  count: number;
-  price: number;
-  discount: number;
-  maxPrice: number;
+  [key: string]: number;
 }
 
 export const ORDER_CONFIG = [
